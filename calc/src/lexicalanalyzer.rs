@@ -54,6 +54,14 @@ pub fn get_token(source: &mut Source, token: &mut Token) {
             token.kind = TokenKind::DivOperatorToken;
             return;
         }
+        else if c == '(' {
+            token.kind = TokenKind::LeftParenToken;
+            return;
+        }
+        else if c == ')' {
+            token.kind = TokenKind::RightParenToken;
+            return;
+        }
         else if c.is_numeric() {
             if matches!(status, LexerStatus::InitialStatus) {
                 status = LexerStatus::InIntPartStatus;

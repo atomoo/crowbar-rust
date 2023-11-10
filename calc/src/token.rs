@@ -8,6 +8,8 @@ pub enum TokenKind {
     SubOperatorToken,
     MulOperatorToken,
     DivOperatorToken,
+    LeftParenToken,
+    RightParenToken,
     EndOfLineToken
 }
 
@@ -24,7 +26,7 @@ impl Default for Token {
     fn default() -> Self {
         Self {
             kind: TokenKind::BadToken,
-            value: -1.0,
+            value: 0.0,
             str: "".to_string()
         }
     }
