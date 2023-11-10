@@ -23,13 +23,11 @@ pub fn get_token(source: &mut Source, token: &mut Token) {
         if (matches!(status, LexerStatus::InIntPartStatus) || matches!(status, LexerStatus::InFracPartStatus)) && !c.is_numeric() && c != '.' {
             token.kind = TokenKind::NumberToken;
             token.value = token.str.trim().parse::<f64>().unwrap();
-            source.next_pos = i;
             return;
         }
         if c.is_whitespace() {
             if c == '\n' {
                 token.kind = TokenKind::EndOfLineToken;
-                source.next_pos = i;
                 return;
             }
             continue;
@@ -42,22 +40,18 @@ pub fn get_token(source: &mut Source, token: &mut Token) {
         // token.str.push('\0');
         if c == '+' {
             token.kind = TokenKind::AddOperatorToken;
-            source.next_pos = i + 1;
             return;
         }
         else if c == '-' {
             token.kind = TokenKind::SubOperatorToken;
-            source.next_pos = i + 1;
             return;
         }
         else if c == '*' {
             token.kind = TokenKind::MulOperatorToken;
-            source.next_pos = i + 1;
             return;
         }
         else if c == '/' {
             token.kind = TokenKind::DivOperatorToken;
-            source.next_pos = i + 1;
             return;
         }
         else if c.is_numeric() {

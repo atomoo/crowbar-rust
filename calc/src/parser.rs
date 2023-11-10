@@ -2,9 +2,14 @@ use std::process::exit;
 
 use crate::{token::{Token, TokenKind}, lexicalanalyzer::get_token, source::Source};
 
+fn my_get_token(source: &mut Source, token: &mut Token) {
+    get_token(source, token);
+    source.next_pos = source.next_pos + token.str.len();
+}
+
 fn parse_primary_expression(source: &mut Source) -> f64 {
     let mut token: Token = Default::default();
-    get_token(source, &mut token);
+    my_get_token(source, &mut token);
     if matches!(token.kind, TokenKind::NumberToken) {
         return token.value;
     }
@@ -17,7 +22,7 @@ fn parse_term(source: &mut Source) -> f64 {
     let mut v2: f64;
     let mut token: Token = Default::default();
     loop {
-        get_token(source, &mut token);
+        my_get_token(source, &mut token);
         if !matches!(token.kind, TokenKind::MulOperatorToken) && !matches!(token.kind, TokenKind::DivOperatorToken) {
             source.next_pos = source.next_pos - token.str.len();
             break;
@@ -38,8 +43,9 @@ pub fn parse_expression(source: &mut Source) -> f64 {
     let mut v2: f64;
     let mut token: Token = Default::default();
     loop {
-        get_token(source, &mut token);
+        my_get_token(source, &mut token);
         if !matches!(token.kind, TokenKind::AddOperatorToken) && !matches!(token.kind, TokenKind::SubOperatorToken) {
+            source.next_pos = source.next_pos - token.str.len();
             break;
         }
         v2 = parse_term(source);
